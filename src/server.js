@@ -1,8 +1,10 @@
 // src/server.js
 import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 // повертає всі нотатки
 app.get('/notes', (req, res) => {
@@ -17,6 +19,7 @@ app.get('/notes', (req, res) => {
 	"message": "Retrieved note with ID: id_param"
 });
 });
+
 
 //  Маршрут для тестування middleware помилки
 app.get('/test-error', (req, res) => {
