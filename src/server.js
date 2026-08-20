@@ -2,7 +2,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import pino  from 'pino-http';
+import pinoHttp  from 'pino-http';
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ const PORT = Number(process.env.PORT) || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(
-  pino({
+  pinoHttp({
     level: 'info',
     transport: {
       target: 'pino-pretty',
