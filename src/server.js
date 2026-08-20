@@ -1,7 +1,6 @@
 // src/server.js
 import express from 'express';
 import dotenv from 'dotenv';
-import 'dotenv/config';
 import cors from 'cors';
 import pino  from 'pino-http';
 
@@ -38,7 +37,7 @@ app.get('/notes', (req, res) => {
 // повертає одну нотатку за ID
   app.get('/notes/:noteId', (req, res) => {
   res.status(200).json({
-	message: 'Retrieved note with ID: ${req.params.noteId}'
+	message: `Retrieved note with ID: ${req.params.noteId}`
 });
 });
 
