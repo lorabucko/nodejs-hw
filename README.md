@@ -1,6 +1,6 @@
 # Express App
 
-A small учебный backend project built with **Node.js** and **Express** for working with a notes collection. According to the assignment, the server should handle HTTP requests, return mock responses for note routes, and include basic error handling. [cite:1]
+A small backend project built with **Node.js** and **Express** for working with a notes collection. According to the assignment, the server should handle HTTP requests, return mock responses for note routes, and include basic error handling. [cite:1]
 
 ## Project Overview
 
