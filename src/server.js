@@ -38,10 +38,9 @@ app.get('/notes', (req, res) => {
 // повертає одну нотатку за ID
   app.get('/notes/:noteId', (req, res) => {
   res.status(200).json({
-	message: "Retrieved note with ID: ${req.params.noteId}}"
+	message: 'Retrieved note with ID: ${req.params.noteId}'
 });
 });
-
 
 //  Маршрут для тестування middleware помилки
 app.get('/test-error', (req, res) => {
@@ -58,8 +57,7 @@ app.use(((req, res, next) => {
 // Middleware для обробки помилок (останнє)
 app.use((err, req, res, next) => {
   res.status(500).json({
-    message: "Simulated server error",
-    error: err.message,
+    message: err.message,
   });
 });
 
