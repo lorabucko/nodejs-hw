@@ -1,38 +1,24 @@
 // src/server.js
 import express from 'express';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import cors from 'cors';
 import pinoHttp  from 'pino-http';
-
-dotenv.config();
+import { connectMongoDB } from './db/connectMongoDB.js';
+import Notes from './models/notes.js';
 
 const app = express();
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || 3030;
 
 app.use(cors());
 app.use(express.json());
-app.use(
-  pinoHttp({
-    level: 'info',
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        colorize: true,
-        translateTime: 'HH:MM:ss',
-        ignore: 'pid,hostname',
-        messageFormat: '{req.method} {req.url} {res.statusCode} - {responseTime}ms',
-        hideObject: true,
-      },
-    },
-  }),
-);
+
 
 // повертає всі нотатки
 app.get('/notes', (req, res) => {
-  res.status(200).json({
-	"message": "Retrieved all notes"
+  const notes = Notes.find();
+  res.json(notes);
 });
-});
+
 
 // повертає одну нотатку за ID
   app.get('/notes/:noteId', (req, res) => {
@@ -59,6 +45,9 @@ app.use((err, req, res, next) => {
     message: err.message,
   });
 });
+
+// підключення до MongoDB
+await connectMongoDB();
 
 // Запуск сервера
 app.listen(PORT, () => {
