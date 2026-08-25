@@ -15,8 +15,10 @@ tag: {
   enum: ["Work", "Personal", "Meeting", "Shopping", "Ideas", "Travel", "Finance", "Health", "Important", "Todo"],
   default: "Todo",
 },
+},
+{
 timestamps: true
-});
+},
+);
 
-const Note = model("Note", noteSchema);
-export default Note;
+export const Note = model("Note", noteSchema);

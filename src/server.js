@@ -1,3 +1,7 @@
+// Workaround for MongoDB SRV DNS resolution on Node.js v24 / Windows
+import dns from 'node:dns';
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';

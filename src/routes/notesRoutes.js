@@ -6,7 +6,7 @@ import {
   getAllNotes,
   getNoteById,
   updateNote,
-} from './controllers/notesController.js';
+} from '../controllers/notesController.js';
 
 const notesRoutes = Router();
 
