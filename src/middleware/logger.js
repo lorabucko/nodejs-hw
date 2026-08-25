@@ -1,7 +1,6 @@
-
-app.use(
-  pinoHttp({
-    level: 'info',
+import pinoHttp from 'pino-http';
+export const logger = pinoHttp({
+  level: 'info',
     transport: {
       target: 'pino-pretty',
       options: {
@@ -12,5 +11,5 @@ app.use(
         hideObject: true,
       },
     },
-  }),
-);
+  });
+
