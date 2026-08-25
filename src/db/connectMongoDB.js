@@ -8,7 +8,8 @@ const connectMongoDB = async () => {
   }
   catch (error) {
     console.error('❌ Failed to connect to MongoDB:', error.message);
-    throw error; // повторне викидання помилки для обробки на вищому рівні
+
+    process.exit(1);
   }
 };
 export default connectMongoDB;

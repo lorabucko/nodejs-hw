@@ -1,62 +1,158 @@
-# Express App
+# Notes API
 
-A small backend project built with **Node.js** and **Express** for working with a notes collection. According to the assignment, the server should handle HTTP requests, return mock responses for note routes, and include basic error handling.
+A backend REST API built with **Node.js**, **Express**, **MongoDB Atlas**, and **Mongoose**. The application provides CRUD operations for a notes collection and follows a modular project structure.
 
-## Project Overview
+## Features
 
-This project is a minimal Express application with a route for retrieving all notes, a route for retrieving a single note by `noteId`, and a separate test route for checking error handling. The server must also use the `PORT` environment variable via `dotenv`, middleware such as `cors` and `express.json()`, HTTP logging with `pino-http`, and dedicated `404` and `500` middleware.
+- Connects to MongoDB Atlas using Mongoose
+- Uses environment variables for configuration
+- Logs HTTP requests with `pino-http`
+- Returns JSON responses
+- Handles unknown routes with a `404` response
+- Handles server and HTTP errors through a global error handler
+- Supports full CRUD operations for notes:
+  - Get all notes
+  - Get one note by ID
+  - Create a note
+  - Update a note
+  - Delete a note
 
 ## Tech Stack
 
 - Node.js
 - Express
+- MongoDB Atlas
+- Mongoose
 - dotenv
 - cors
 - pino-http
-- nodemon (for development)
+- pino-pretty
+- http-errors
+- nodemon
 - ESLint
 
-## Installed Modules
+## API Endpoints
 
-### Production dependencies
+| Method | Endpoint | Description | Success status |
+|---|---|---|---:|
+| `GET` | `/notes` | Get all notes | `200` |
+| `GET` | `/notes/:noteId` | Get a note by its ID | `200` |
+| `POST` | `/notes` | Create a new note | `201` |
+| `PATCH` | `/notes/:noteId` | Update an existing note | `200` |
+| `DELETE` | `/notes/:noteId` | Delete an existing note | `200` |
 
-- `express` — web server and routing.
-- `dotenv` — loads environment variables from the `.env` file.
-- `cors` — enables requests from other domains.
-- `pino-http` — logs incoming HTTP requests.
+### Create a Note
 
-### Development dependencies
+**Request**
 
-- `nodemon` — automatically restarts the server during development.
-- `eslint` — checks code quality and style.
+```json
+{
+  "title": "Shopping list",
+  "content": "Toothpaste, soap, shampoo",
+  "tag": "Shopping"
+}
+```
 
-## Main Features
+`title` is required. `content` is optional and defaults to an empty string. `tag` is optional and defaults to `Todo`.
 
-- `GET /notes` — returns the message `Retrieved all notes`.
-- `GET /notes/:noteId` — returns the message `Retrieved note with ID: ...`.
-- `GET /test-error` — intentionally throws the error `Simulated server error` to test error-handling middleware.
-- Handles unknown routes with a `404` response and the message `Route not found`.
-- Handles server errors with a `500` response and the error message text.
+Available tag values:
+
+```text
+Work, Personal, Meeting, Shopping, Ideas, Travel, Finance, Health, Important, Todo
+```
+
+### Error Responses
+
+Unknown routes return:
+
+```json
+{
+  "message": "Route not found"
+}
+```
+
+A request for a note that does not exist returns:
+
+```json
+{
+  "message": "Note not found"
+}
+```
+
+## Note Model
+
+Each note contains:
+
+```text
+_id
+title
+content
+tag
+createdAt
+updatedAt
+```
+
+The `createdAt` and `updatedAt` fields are generated automatically by Mongoose through the `timestamps: true` schema option.
 
 ## Project Structure
 
-```bash
+```text
 nodejs-hw/
 ├── src/
+│   ├── controllers/
+│   │   └── notesController.js
+│   ├── db/
+│   │   └── connectMongoDB.js
+│   ├── middleware/
+│   │   ├── errorHandler.js
+│   │   ├── logger.js
+│   │   └── notFoundHandler.js
+│   ├── models/
+│   │   └── note.js
+│   ├── routes/
+│   │   └── notesRoutes.js
 │   └── server.js
-├── .env
+├── .env.example
 ├── .gitignore
 ├── .prettierrc
-└── package.json
+├── eslint.config.js
+├── package.json
+└── README.md
 ```
 
-This structure is required by the assignment: the server logic is placed inside `src`, while configuration files stay in the project root.
+## Environment Variables
 
-## Run the Project
+PORT=
+MONGO_URL=
+
+## Installation
 
 ```bash
+git clone https://github.com/lorabucko/nodejs-hw.git
+cd nodejs-hw
+git checkout 02-mongodb
 npm install
+```
+
+## Run Locally
+
+Start the development server:
+
+```bash
 npm run dev
 ```
 
-According to the assignment requirements, `package.json` must include `start` and `dev` scripts, and the server should run on the port provided by `PORT` or fall back to `3000` if the environment variable is not available.
+The server starts only after a successful MongoDB connection.
+
+Expected terminal output:
+
+```text
+✅ MongoDB connection established successfully
+Server is running on port 3000
+```
+
+## Deployment
+
+The API is deployed from the `02-mongodb` branch to Render.
+
+For deployment, add `MONGO_URL` as an environment variable in the Render dashboard. Render provides the `PORT` variable for web services automatically.

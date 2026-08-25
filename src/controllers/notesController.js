@@ -11,7 +11,7 @@ export const getNoteById = async (req, res) => {
   const note = await Note.findById(noteId);
 
   if (!note) {
-    throw createHttpError(404, 'Note with id=${noteId} not found`');
+    throw createHttpError(404, `Note with id=${noteId} not found`);
   }
   res.status(200).json(note);
 };
@@ -35,7 +35,7 @@ export const updateNote = async (req, res) => {
   const { noteId } = req.params;
 
   const note = await Note.findByIdAndUpdate(noteId, req.body, {
-    new: true,
+    returnDocument: 'after',
   });
 
   if (!note) {
