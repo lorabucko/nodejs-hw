@@ -1,6 +1,8 @@
  // Middleware 404 для обробки неiснуючих маршрутів
-export const notFoundHandler = (req, res, next) => {
+const notFoundHandler = (req, res, next) => {
   res.status(404).json({
-    message: 'Route not found'
+    message: `${req.method} ${req.url} not found`
   });
 };
+
+export default notFoundHandler;
