@@ -5,6 +5,7 @@ dns.setServers(['8.8.8.8', '8.8.4.4']);
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
+import { errors } from 'celebrate';
 
 import connectMongoDB from './db/connectMongoDB.js';
 import {logger} from './middleware/logger.js';
@@ -22,6 +23,7 @@ app.use(cors());
 app.use(notesRoutes);
 
 app.use(notFoundHandler);
+app.use(errors());
 app.use(errorHandler); // повинен бути останнім
 
 
