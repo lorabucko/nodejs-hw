@@ -4,42 +4,70 @@ import { Note } from '../models/note.js';
 export const getAllNotes = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
-    const { page = 1, perPage = 10, sortBy, sortOrder, filter, search } = req.query;
+    const {
+      page = 1,
+      perPage = 10,
+      sortBy,
+      sortOrder,
+      filter,
+      search,
+    } = req.query;
 
     const skip = (Number(page) - 1) * Number(perPage);
 
-    const query = { userId };
+    let notesQuery = Note.find().where('userId').equals(userId);
 
     if (filter?.tag) {
-      query.tag = filter.tag;
+      notesQuery = notesQuery.where('tag').equals(filter.tag);
     }
 
     if (search) {
-      query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { content: { $regex: search, $options: 'i' } },
-      ];
+      notesQuery = notesQuery.find({
+        $or: [
+          { title: { $regex: search, $options: 'i' } },
+          { content: { $regex: search, $options: 'i' } },
+        ],
+      });
     }
 
-    const sort = {};
     if (sortBy) {
-      sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
+      notesQuery = notesQuery.sort({
+        [sortBy]: sortOrder === 'desc' ? -1 : 1,
+      });
     }
 
-    const [notes, totalItems] = await Promise.all([
-      Note.find(query).sort(sort).skip(skip).limit(Number(perPage)),
-      Note.countDocuments(query),
+    const [notes, totalNotes] = await Promise.all([
+      notesQuery.skip(skip).limit(Number(perPage)),
+      Note.find()
+        .where('userId')
+        .equals(userId)
+        .find(
+          filter?.tag
+            ? { tag: filter.tag }
+            : {},
+        )
+        .find(
+          search
+            ? {
+                $or: [
+                  { title: { $regex: search, $options: 'i' } },
+                  { content: { $regex: search, $options: 'i' } },
+                ],
+              }
+            : {},
+        )
+        .countDocuments(),
     ]);
 
-    const totalPages = Math.ceil(totalItems / Number(perPage));
+    const totalPages = Math.ceil(totalNotes / Number(perPage));
 
- res.json({
-  page: Number(page),
-  perPage: Number(perPage),
-  totalNotes: totalItems,
-  totalPages,
-  notes,
-});
+    res.json({
+      page: Number(page),
+      perPage: Number(perPage),
+      totalNotes,
+      totalPages,
+      notes,
+    });
   } catch (error) {
     next(error);
   }
