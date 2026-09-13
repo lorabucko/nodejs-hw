@@ -21,8 +21,8 @@ refreshTokenValidUntil:{
   type: Date,
   required: true,
 },
-timestamps: true,
-versionKey: false,
 },
+{timestamps: true,
+versionKey: false,}
 );
 export const Session = model('Session', sessionSchema);

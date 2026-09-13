@@ -15,9 +15,9 @@ password: {
   required: true,
   minLength: 8,
 },
-timestamps: true,
-versionKey: false,
 },
+{timestamps: true,
+versionKey: false,}
 );
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
