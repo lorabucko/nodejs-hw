@@ -9,7 +9,6 @@ title: {
 },
 content: {
   type: String,
-  trim: true,
   default: "",
 },
 tag: {
@@ -17,9 +16,15 @@ tag: {
   enum: TAGS,
   default: "Todo",
 },
+userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
 },
 {
-timestamps: true
+timestamps: true,
+versionKey: false,
 },
 );
 
