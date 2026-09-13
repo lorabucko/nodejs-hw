@@ -5,12 +5,4 @@ export const errorHandler = (error, req, res, next)=> {
     return res.status(status).json({
       message: error.message || error.name
     });
-  }
-
-  const isProd = process.env.NODE_ENV === "production";
-  const message = isProd ? "Some error" : error.message;
-  res.status(500).json({
-    message,
-  });
-};
-
+  }};
