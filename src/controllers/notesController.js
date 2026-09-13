@@ -33,15 +33,13 @@ export const getAllNotes = async (req, res, next) => {
 
     const totalPages = Math.ceil(totalItems / Number(perPage));
 
-    res.json({
-      data: notes,
-      page: Number(page),
-      perPage: Number(perPage),
-      totalItems,
-      totalPages,
-      hasPreviousPage: Number(page) > 1,
-      hasNextPage: Number(page) < totalPages,
-    });
+ res.json({
+  page: Number(page),
+  perPage: Number(perPage),
+  totalNotes: totalItems,
+  totalPages,
+  notes,
+});
   } catch (error) {
     next(error);
   }
@@ -87,7 +85,7 @@ export const updateNote = async (req, res, next) => {
     const note = await Note.findOneAndUpdate(
       { _id: noteId, userId },
       req.body,
-      { new: true, runValidators: true },
+      { returnDocument: 'after', runValidators: true },
     );
 
     if (!note) {
@@ -111,7 +109,7 @@ export const deleteNote = async (req, res, next) => {
       throw createHttpError(404, 'Note not found');
     }
 
-    res.status(204).send();
+    res.status(200).json(note);
   } catch (error) {
     next(error);
   }

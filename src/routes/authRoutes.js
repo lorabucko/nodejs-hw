@@ -14,7 +14,7 @@ import {
 const authRouter = Router();
 
 authRouter.post(
-  '/register',
+  '/auth/register',
   celebrate({
     [Segments.BODY]: registerUserSchema,
   }),
@@ -22,14 +22,14 @@ authRouter.post(
 );
 
 authRouter.post(
-  '/login',
+  '/auth/login',
   celebrate({
     [Segments.BODY]: loginUserSchema,
   }),
   loginUser,
 );
 
-authRouter.post('/refresh', refreshUserSession);
-authRouter.post('/logout', logoutUser);
+authRouter.post('/auth/refresh', refreshUserSession);
+authRouter.post('/auth/logout', logoutUser);
 
 export default authRouter;

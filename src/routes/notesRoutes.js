@@ -20,7 +20,7 @@ const notesRouter = Router();
 notesRouter.use(authenticate);
 
 notesRouter.get(
-  '/',
+  '/notes',
   celebrate({
     [Segments.QUERY]: getAllNotesSchema,
   }),
@@ -28,7 +28,7 @@ notesRouter.get(
 );
 
 notesRouter.get(
-  '/:noteId',
+  '/notes/:noteId',
   celebrate({
     [Segments.PARAMS]: noteIdSchema,
   }),
@@ -36,7 +36,7 @@ notesRouter.get(
 );
 
 notesRouter.post(
-  '/',
+  '/notes',
   celebrate({
     [Segments.BODY]: createNoteSchema,
   }),
@@ -44,7 +44,7 @@ notesRouter.post(
 );
 
 notesRouter.patch(
-  '/:noteId',
+  '/notes/:noteId',
   celebrate({
     [Segments.PARAMS]: noteIdSchema,
     [Segments.BODY]: updateNoteSchema,
@@ -53,7 +53,7 @@ notesRouter.patch(
 );
 
 notesRouter.delete(
-  '/:noteId',
+  '/notes/:noteId',
   celebrate({
     [Segments.PARAMS]: noteIdSchema,
   }),
