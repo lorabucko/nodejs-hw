@@ -1,8 +1,10 @@
-import {HttpError} from "http-errors";
-export const errorHandler = (error, req, res, next)=> {
-  if(error instanceof HttpError) {
-    const {status = 500} = error;
-    return res.status(status).json({
-      message: error.message || error.name
-    });
-  }};
+export const errorHandler = (error, req, res, next) => {
+  console.error('SERVER ERROR:', error);
+
+  const status = error.status || error.statusCode || 500;
+  const message = error.message || 'Internal Server Error';
+
+  res.status(status).json({
+    message,
+  });
+};
