@@ -1,0 +1,12 @@
+HTTP/1.1 500 Internal Server Error
+X-Powered-By: Express
+Vary: Origin
+Access-Control-Allow-Credentials: true
+Content-Type: application/json; charset=utf-8
+Content-Length: 83
+ETag: W/"53-JBJ8RVqG6ujv/rLnkOJQSxPTn9M"
+Date: Fri, 18 Sep 2026 15:25:50 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"message":"Cannot destructure property 'email' of 'req.body' as it is undefined."}
